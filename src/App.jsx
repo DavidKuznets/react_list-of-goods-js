@@ -15,39 +15,47 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
+const getSortedGoods = (goods, order, isReversed) => {
+  const sortedGoods = [...goods];
+
+  if (order === 'alphabetical') {
+    sortedGoods.sort((a, b) => a.localeCompare(b));
+  } else if (order === 'length') {
+    sortedGoods.sort((a, b) => a.length - b.length);
+  }
+
+  if (isReversed) {
+    sortedGoods.reverse();
+  }
+
+  return sortedGoods;
+};
+
 export const App = () => {
-  const [goods, setGoods] = useState([...goodsFromServer]);
   const [order, setOrder] = useState('');
   const [isReversed, setIsReversed] = useState(false);
-
   const sortByAlphabetically = () => {
-    const sortedGoods = [...goodsFromServer].sort((a, b) => a.localeCompare(b));
-
-    setGoods(sortedGoods);
-    setOrder('alphabetical');
     setIsReversed(false);
+    setOrder('alphabetical');
   };
 
   const sortByLength = () => {
-    const sortedGoods = [...goodsFromServer].sort(
-      (a, b) => a.length - b.length,
-    );
-
-    setGoods(isReversed ? sortedGoods.reverse() : sortedGoods);
     setOrder('length');
     setIsReversed(false);
   };
 
   const reverseGoods = () => {
-    setGoods([...goods].reverse());
     setIsReversed(!isReversed);
   };
 
   const resetGoods = () => {
-    setGoods([...goodsFromServer]);
     setOrder('');
     setIsReversed(false);
   };
+
+  const sortedGoods = getSortedGoods(goodsFromServer, order, isReversed);
+
+  const isModified = order !== '' || isReversed;
 
   return (
     <div className="section content">
@@ -76,7 +84,7 @@ export const App = () => {
           Reverse
         </button>
 
-        {JSON.stringify(goods) !== JSON.stringify(goodsFromServer) && (
+        {isModified && (
           <button
             type="button"
             className="button is-danger"
@@ -88,7 +96,7 @@ export const App = () => {
       </div>
 
       <ul>
-        {goods.map(good => (
+        {sortedGoods.map(good => (
           <li key={good} data-cy="Good">
             {good}
           </li>
