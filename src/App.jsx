@@ -35,13 +35,11 @@ export const App = () => {
   const [order, setOrder] = useState('');
   const [isReversed, setIsReversed] = useState(false);
   const sortByAlphabetically = () => {
-    setIsReversed(false);
     setOrder('alphabetical');
   };
 
   const sortByLength = () => {
     setOrder('length');
-    setIsReversed(false);
   };
 
   const reverseGoods = () => {
@@ -62,7 +60,7 @@ export const App = () => {
       <div className="buttons">
         <button
           type="button"
-          className={`button is-info ${order === 'alphabetical' && !isReversed ? '' : 'is-light'}`}
+          className={`button is-info ${order === 'alphabetical' ? '' : 'is-light'}`}
           onClick={sortByAlphabetically}
         >
           Sort alphabetically
@@ -70,7 +68,7 @@ export const App = () => {
 
         <button
           type="button"
-          className={`button is-success ${order === 'length' && !isReversed ? '' : 'is-light'}`}
+          className={`button is-success ${order === 'length' ? '' : 'is-light'}`}
           onClick={sortByLength}
         >
           Sort by length
